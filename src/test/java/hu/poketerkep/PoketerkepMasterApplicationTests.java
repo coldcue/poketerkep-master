@@ -1,4 +1,4 @@
-package com.poketerkep;
+package hu.poketerkep;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

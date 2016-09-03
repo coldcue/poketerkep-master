@@ -1,4 +1,4 @@
-package com.poketerkep;
+package hu.poketerkep.master;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
