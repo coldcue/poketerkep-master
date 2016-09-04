@@ -8,7 +8,7 @@ import org.junit.Test;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
+import java.util.Collection;
 
 import static org.junit.Assert.*;
 
@@ -26,10 +26,10 @@ public class FloodFillTest {
             assertEquals(6, getPrivateField("nvert").getInt(floodFill));
 
             double delta = 0.000001;
-            assertEquals(47.001, getPrivateField("xMax").getDouble(floodFill), delta);
-            assertEquals(19.0005, getPrivateField("yMax").getDouble(floodFill), delta);
-            assertEquals(47.0, getPrivateField("xMin").getDouble(floodFill), delta);
-            assertEquals(18.009, getPrivateField("yMin").getDouble(floodFill), delta);
+            assertEquals(47.001, getPrivateField("yMax").getDouble(floodFill), delta);
+            assertEquals(19.0005, getPrivateField("xMax").getDouble(floodFill), delta);
+            assertEquals(47.0, getPrivateField("yMin").getDouble(floodFill), delta);
+            assertEquals(18.009, getPrivateField("xMin").getDouble(floodFill), delta);
         }
 
         ///////////////////////// isInPolygon
@@ -45,8 +45,8 @@ public class FloodFillTest {
 
         ///////////////////////// Generate
         {
-            ArrayList<Coordinate> coordinates = floodFill.generate();
-            assertEquals(761, coordinates.size());
+            Collection<Coordinate> coordinates = floodFill.generate();
+            assertEquals(760, coordinates.size());
 
             //Check if every point has a minimal distance
             for (Coordinate a : coordinates) {

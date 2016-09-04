@@ -2,12 +2,10 @@ package hu.poketerkep.master.geo;
 
 import com.google.common.math.DoubleMath;
 import hu.poketerkep.shared.geo.Coordinate;
+import hu.poketerkep.shared.geo.Direction;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Deque;
-
-import static hu.poketerkep.shared.geo.Direction.*;
+import java.util.HashSet;
 
 public class FloodFill {
     private static final double DISTANCE = 0.0989; // 2 * 70 * sqrt(2) m
@@ -25,8 +23,8 @@ public class FloodFill {
 
         //Search min/max values
         for (Coordinate vertex : vertices) {
-            double x = vertex.getLatitude();
-            double y = vertex.getLongitude();
+            double x = vertex.getLongitude();
+            double y = vertex.getLatitude();
 
 
             //X
@@ -44,8 +42,8 @@ public class FloodFill {
         verty = new double[nvert];
 
         for (int i = 0; i < nvert; i++) {
-            vertx[i] = vertices[i].getLatitude();
-            verty[i] = vertices[i].getLongitude();
+            vertx[i] = vertices[i].getLongitude();
+            verty[i] = vertices[i].getLatitude();
         }
     }
 
@@ -54,37 +52,35 @@ public class FloodFill {
      *
      * @return the points
      */
-    public ArrayList<Coordinate> generate() {
-        ArrayList<Coordinate> coordinates = new ArrayList<>();
-        Deque<Coordinate> queue = new ArrayDeque<>();
+    public HashSet<Coordinate> generate() {
+        HashSet<Coordinate> coordinates = new HashSet<>();
 
-        // Start with the fisrt vertex
-        queue.add(vertices[0]);
+        Coordinate lastCoordinate = Coordinate.fromDegrees(yMin, xMin);
 
-        long count = 0;
-        boolean first = true;
+        while (true) {
+            //Go from west to east
+            Coordinate coordinate = lastCoordinate.getNew(DISTANCE, Direction.EAST.getAngle());
 
-        // While the queue is not empty
-        while (queue.size() != 0) {
-            Coordinate coordinate = queue.poll();
-
-            // Check if its in the polygon and not already added
-            if ((!isCoordinateAlreadyAdded(coordinates, coordinate) && isInPolygon(coordinate)) || first) {
-
-                if (first) {
-                    //If first
-                    first = false;
-                } else {
-                    //Add it to the coordinates
-                    coordinates.add(coordinate);
-                }
-
-                //Add coordinates in every direction
-                queue.add(coordinate.getNew(DISTANCE, NORTH.getAngle()));
-                queue.add(coordinate.getNew(DISTANCE, EAST.getAngle()));
-                queue.add(coordinate.getNew(DISTANCE, SOUTH.getAngle()));
-                queue.add(coordinate.getNew(DISTANCE, WEST.getAngle()));
+            // If its in the polygon, add it
+            if (isInPolygon(coordinate)) {
+                coordinates.add(coordinate);
             }
+            // If its not in the bounding box
+            else {
+                //Check if it is too East
+                if (coordinate.getLongitude() > xMax) {
+                    // Create a new row up North
+                    coordinate = Coordinate.fromDegrees(coordinate.getLatitude(), xMin) // The highest and most western coordinate
+                            .getNew(DISTANCE, Direction.NORTH.getAngle()); // A new norther
+
+                    //We have reached yMax
+                    if (coordinate.getLatitude() > yMax) {
+                        break;
+                    }
+                }
+            }
+
+            lastCoordinate = coordinate;
         }
 
         return coordinates;
@@ -116,10 +112,22 @@ public class FloodFill {
      * @return true if the coordinate is in the polygon
      */
     private boolean isInPolygon(Coordinate coordinate) {
-        double testx = coordinate.getLatitude();
-        double testy = coordinate.getLongitude();
+        double testy = coordinate.getLatitude();
+        double testx = coordinate.getLongitude();
 
-        return !(testx < xMin || testx > xMax || testy < yMin || testy > yMax) && pnpoly(testx, testy);
+        return pnpoly(testx, testy);
+    }
+
+    /**
+     * Check if its in the bounding box
+     *
+     * @return
+     */
+    private boolean isInBoundingBox(Coordinate coordinate) {
+        double testy = coordinate.getLatitude();
+        double testx = coordinate.getLongitude();
+
+        return testx < xMin || testx > xMax || testy < yMin || testy > yMax;
     }
 
 

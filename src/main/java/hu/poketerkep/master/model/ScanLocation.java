@@ -32,4 +32,8 @@ public class ScanLocation implements Comparable<ScanLocation> {
         if (lastScanned.equals(o.lastScanned)) return Long.compare(id, o.id);
         return lastScanned.isBefore(o.lastScanned) ? 1 : -1;
     }
+
+    public long getId() {
+        return id;
+    }
 }

@@ -11,6 +11,7 @@ import org.mockito.Mockito;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 
 public class ScanServiceTest {
     @Test
@@ -33,5 +34,11 @@ public class ScanServiceTest {
         Collection<ScanLocation> nextScanLocations = scanService.getNextScanLocations(100);
 
         Assert.assertEquals(100, nextScanLocations.size());
+
+        Iterator<ScanLocation> iterator = nextScanLocations.iterator();
+        Assert.assertEquals(0, iterator.next().getId());
+        Assert.assertEquals(0, iterator.next().getId());
+        Assert.assertEquals(1, iterator.next().getId());
+        Assert.assertEquals(1, iterator.next().getId());
     }
 }
