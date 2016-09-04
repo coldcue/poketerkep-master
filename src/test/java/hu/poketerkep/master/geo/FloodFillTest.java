@@ -58,6 +58,15 @@ public class FloodFillTest {
         {
             ArrayList<Coordinate> coordinates = floodFill.generate();
             assertEquals(1076, coordinates.size());
+
+            //Check if every point has a minimal distance of 70 - 5 (65) meters
+            for (Coordinate a : coordinates) {
+                for (Coordinate b : coordinates) {
+                    if (!a.equals(b)) {
+                        assertTrue("Every point should have a minimum distance of 70 - 5 (65) meters", a.getDistance(b) > 0.065);
+                    }
+                }
+            }
         }
     }
 

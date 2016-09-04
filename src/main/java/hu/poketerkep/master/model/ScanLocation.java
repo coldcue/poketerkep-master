@@ -5,8 +5,8 @@ import hu.poketerkep.shared.geo.Coordinate;
 import java.time.Instant;
 
 public class ScanLocation implements Comparable<ScanLocation> {
-    private long id;
-    private Coordinate coordinate;
+    private final long id;
+    private final Coordinate coordinate;
     private Instant lastScanned;
 
     public ScanLocation(long id, Coordinate coordinate, Instant lastScanned) {
@@ -15,20 +15,8 @@ public class ScanLocation implements Comparable<ScanLocation> {
         this.lastScanned = lastScanned;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public Coordinate getCoordinate() {
         return coordinate;
-    }
-
-    public void setCoordinate(Coordinate coordinate) {
-        this.coordinate = coordinate;
     }
 
     public Instant getLastScanned() {
@@ -41,6 +29,7 @@ public class ScanLocation implements Comparable<ScanLocation> {
 
     @Override
     public int compareTo(ScanLocation o) {
-        return Long.compare(id, o.id);
+        if (lastScanned.equals(o.lastScanned)) return Long.compare(id, o.id);
+        return lastScanned.isBefore(o.lastScanned) ? 1 : -1;
     }
 }

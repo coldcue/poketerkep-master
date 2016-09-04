@@ -1,8 +1,11 @@
 package hu.poketerkep.master.model;
 
 
+import hu.poketerkep.master.geo.FloodFill;
 import hu.poketerkep.shared.geo.Coordinate;
 
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -10,7 +13,6 @@ import java.util.TreeSet;
 public class ScanPolygon {
     private String id;
     private Coordinate[] vertices;
-    private int threadCount;
 
     public String getId() {
         return id;
@@ -28,16 +30,17 @@ public class ScanPolygon {
         this.vertices = vertices;
     }
 
-    public int getThreadCount() {
-        return threadCount;
-    }
-
-    public void setThreadCount(int threadCount) {
-        this.threadCount = threadCount;
-    }
-
-    public Collection<ScanLocation> getScanLocations() {
+    public Collection<ScanLocation> generateScanLocations() {
         SortedSet<ScanLocation> scanLocations = new TreeSet<>();
+
+        FloodFill floodFill = new FloodFill(vertices);
+        ArrayList<Coordinate> coordinates = floodFill.generate();
+
+        long id = 0;
+
+        for (Coordinate coordinate : coordinates) {
+            scanLocations.add(new ScanLocation(id++, coordinate, Instant.MIN));
+        }
 
         return scanLocations;
     }
