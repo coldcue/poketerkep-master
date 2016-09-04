@@ -66,13 +66,13 @@ public class UserConfigDataService implements DataService<UserConfig> {
     public Collection<UserConfig> getUnused(int limit) {
         long time = Instant.now().minusSeconds(Constants.UNUSED_USER_TIME_SECONDS).toEpochMilli();
 
-        Map<String, AttributeValue> expressionAttributeValues = new HashMap<>();
-        expressionAttributeValues.put(":time", new AttributeValue().withN(Long.toString(time)));
-        expressionAttributeValues.put(":banned", new AttributeValue().withBOOL(false));
+        Map<String, AttributeValue> eav = new HashMap<>();
+        eav.put(":time", new AttributeValue().withN(Long.toString(time)));
+        eav.put(":banned", new AttributeValue().withN("0"));
 
         DynamoDBScanExpression scanExpression = new DynamoDBScanExpression()
                 .withFilterExpression("lastUsed < :time and banned = :banned")
-                .withExpressionAttributeValues(expressionAttributeValues)
+                .withExpressionAttributeValues(eav)
                 .withLimit(limit);
 
         return dynamoDBMapper.scan(UserConfigDBItem.class, scanExpression).stream()

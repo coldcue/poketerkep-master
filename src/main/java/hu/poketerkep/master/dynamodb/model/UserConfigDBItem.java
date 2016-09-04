@@ -12,20 +12,20 @@ public class UserConfigDBItem {
     @DynamoDBAttribute
     private long lastUsed;
     @DynamoDBAttribute
-    private boolean banned;
+    private int banned;
 
     public static UserConfigDBItem fromUserConfig(UserConfig userConfig) {
         UserConfigDBItem item = new UserConfigDBItem();
 
         item.userName = userConfig.getUserName();
         item.lastUsed = userConfig.getLastUsed();
-        item.banned = userConfig.isBanned();
+        item.banned = userConfig.isBanned() ? 1 : 0;
 
         return item;
     }
 
     public UserConfig toUserConfig() {
-        return new UserConfig(userName, lastUsed, banned);
+        return new UserConfig(userName, lastUsed, banned == 1);
     }
 
     public String getUserName() {
@@ -44,11 +44,11 @@ public class UserConfigDBItem {
         this.lastUsed = lastUsed;
     }
 
-    public boolean isBanned() {
+    public int getBanned() {
         return banned;
     }
 
-    public void setBanned(boolean banned) {
+    public void setBanned(int banned) {
         this.banned = banned;
     }
 }

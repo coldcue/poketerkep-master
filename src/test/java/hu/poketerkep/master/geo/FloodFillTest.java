@@ -1,6 +1,7 @@
 package hu.poketerkep.master.geo;
 
 import hu.poketerkep.master.model.ScanPolygon;
+import hu.poketerkep.master.tools.ScanPolygonGenerator;
 import hu.poketerkep.shared.geo.Coordinate;
 import org.junit.Test;
 
@@ -15,22 +16,10 @@ public class FloodFillTest {
     @Test
     public void generate() throws Exception {
 
-        // Create a concave polygon
-        ScanPolygon scanPolygon = new ScanPolygon();
-
-        Coordinate[] vertices = new Coordinate[6];
-        vertices[0] = Coordinate.fromDegrees(47.0000, 19.0000);
-        vertices[1] = Coordinate.fromDegrees(47.0000, 18.0090);
-        vertices[2] = Coordinate.fromDegrees(47.0005, 18.0095);
-        vertices[3] = Coordinate.fromDegrees(47.0010, 18.0090);
-        vertices[4] = Coordinate.fromDegrees(47.0010, 19.0000);
-        vertices[5] = Coordinate.fromDegrees(47.0005, 19.0005);
-
-        scanPolygon.setVertices(vertices);
-
         ///////////////////////// Construct
 
-        FloodFill floodFill = new FloodFill(vertices);
+        ScanPolygon scanPolygon = ScanPolygonGenerator.generateConcanveTest();
+        FloodFill floodFill = new FloodFill(scanPolygon.getVertices());
 
         {
             //Assert if every field is right
@@ -57,13 +46,13 @@ public class FloodFillTest {
         ///////////////////////// Generate
         {
             ArrayList<Coordinate> coordinates = floodFill.generate();
-            assertEquals(1076, coordinates.size());
+            assertEquals(761, coordinates.size());
 
-            //Check if every point has a minimal distance of 70 - 5 (65) meters
+            //Check if every point has a minimal distance
             for (Coordinate a : coordinates) {
                 for (Coordinate b : coordinates) {
                     if (!a.equals(b)) {
-                        assertTrue("Every point should have a minimum distance of 70 - 5 (65) meters", a.getDistance(b) > 0.065);
+                        assertTrue("Every point should have a minimum distance of 98.99 - 0.99 (98) meters", a.getDistance(b) > 0.098);
                     }
                 }
             }

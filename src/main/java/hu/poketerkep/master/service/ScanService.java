@@ -29,7 +29,7 @@ public class ScanService {
         scanPolygonDataService.getAll().forEach(scanPolygons::add);
 
         //Generate locations
-        scanPolygons.parallelStream().forEach(scanPolygon -> scanLocations.addAll(scanPolygon.generateScanLocations()));
+        scanPolygons.forEach(scanPolygon -> scanLocations.addAll(scanPolygon.generateScanLocations()));
     }
 
     public Collection<ScanLocation> getNextScanLocations(int limit) {

@@ -3,14 +3,14 @@ package hu.poketerkep.master.geo;
 import com.google.common.math.DoubleMath;
 import hu.poketerkep.shared.geo.Coordinate;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Queue;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.Deque;
 
 import static hu.poketerkep.shared.geo.Direction.*;
 
 public class FloodFill {
-    private static final double DISTANCE = 0.07; // 70 m
+    private static final double DISTANCE = 0.0989; // 2 * 70 * sqrt(2) m
     private final Coordinate[] vertices;
     private final int nvert;
     private final double[] vertx;
@@ -56,7 +56,7 @@ public class FloodFill {
      */
     public ArrayList<Coordinate> generate() {
         ArrayList<Coordinate> coordinates = new ArrayList<>();
-        Queue<Coordinate> queue = new LinkedBlockingQueue<>();
+        Deque<Coordinate> queue = new ArrayDeque<>();
 
         // Start with the fisrt vertex
         queue.add(vertices[0]);
