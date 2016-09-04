@@ -4,6 +4,7 @@ package hu.poketerkep.master.api;
 import hu.poketerkep.master.model.ScanLocation;
 import hu.poketerkep.master.service.ScanService;
 import hu.poketerkep.shared.datasource.PokemonDataSource;
+import hu.poketerkep.shared.geo.Coordinate;
 import hu.poketerkep.shared.model.Pokemon;
 import hu.poketerkep.shared.validator.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 @RestController
 public class ClientController {
@@ -29,10 +31,11 @@ public class ClientController {
         pokemonDataSource.addAll(Arrays.asList(pokemons));
     }
 
-    //@JsonView(ScanLocation.View.OnlyCoordinates.class)
     @GetMapping("nextScanLocations")
-    public Collection<ScanLocation> getNextScanLocations(@RequestParam(required = false, defaultValue = "100") int limit) {
-        return scanService.getNextScanLocations(limit);
+    public Collection<Coordinate> getNextScanLocations(@RequestParam int limit) {
+        return scanService.getNextScanLocations(limit).stream()
+                .map(ScanLocation::getCoordinate)
+                .collect(Collectors.toList());
     }
 
 }
