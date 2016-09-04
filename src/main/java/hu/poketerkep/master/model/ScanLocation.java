@@ -1,5 +1,6 @@
 package hu.poketerkep.master.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import hu.poketerkep.shared.geo.Coordinate;
 
 import java.time.Instant;
@@ -15,6 +16,7 @@ public class ScanLocation implements Comparable<ScanLocation> {
         this.lastScanned = lastScanned;
     }
 
+    @JsonView(View.OnlyCoordinates.class)
     public Coordinate getCoordinate() {
         return coordinate;
     }
@@ -30,10 +32,15 @@ public class ScanLocation implements Comparable<ScanLocation> {
     @Override
     public int compareTo(ScanLocation o) {
         if (lastScanned.equals(o.lastScanned)) return Long.compare(id, o.id);
-        return lastScanned.isBefore(o.lastScanned) ? 1 : -1;
+        return lastScanned.isBefore(o.lastScanned) ? -1 : 1;
     }
 
     public long getId() {
         return id;
+    }
+
+    public static class View {
+        public interface OnlyCoordinates {
+        }
     }
 }

@@ -15,7 +15,7 @@ public class ScanPolygonTest {
 
         Collection<ScanLocation> scanLocations = scanPolygon.generateScanLocations();
 
-        Assert.assertEquals(1076, scanLocations.size());
+        Assert.assertEquals(760, scanLocations.size());
     }
 
 }

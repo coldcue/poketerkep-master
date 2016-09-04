@@ -1,15 +1,12 @@
 package hu.poketerkep.master.geo;
 
-import com.google.common.math.DoubleMath;
 import hu.poketerkep.shared.geo.Coordinate;
 import hu.poketerkep.shared.geo.Direction;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 public class FloodFill {
     private static final double DISTANCE = 0.0989; // 2 * 70 * sqrt(2) m
-    private final Coordinate[] vertices;
     private final int nvert;
     private final double[] vertx;
     private final double[] verty;
@@ -19,7 +16,6 @@ public class FloodFill {
             yMax = Double.MIN_VALUE;
 
     public FloodFill(Coordinate[] vertices) {
-        this.vertices = vertices;
 
         //Search min/max values
         for (Coordinate vertex : vertices) {
@@ -86,24 +82,6 @@ public class FloodFill {
         return coordinates;
     }
 
-    /**
-     * Check if this coordinate is not already added
-     *
-     * @param coordinates
-     * @param coordinate
-     * @return
-     */
-    private boolean isCoordinateAlreadyAdded(ArrayList<Coordinate> coordinates, Coordinate coordinate) {
-        for (Coordinate c : coordinates) {
-            double tolerance = 0.0000001;
-            if (DoubleMath.fuzzyEquals(c.getLatitude(), coordinate.getLatitude(), tolerance)
-                    && DoubleMath.fuzzyEquals(c.getLongitude(), coordinate.getLongitude(), tolerance)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
 
     /**
      * Determine if a coordinate is in a polygon
@@ -119,19 +97,6 @@ public class FloodFill {
     }
 
     /**
-     * Check if its in the bounding box
-     *
-     * @return
-     */
-    private boolean isInBoundingBox(Coordinate coordinate) {
-        double testy = coordinate.getLatitude();
-        double testx = coordinate.getLongitude();
-
-        return testx < xMin || testx > xMax || testy < yMin || testy > yMax;
-    }
-
-
-    /**
      * Determines if a point is in a polygon
      * http://stackoverflow.com/questions/217578/how-can-i-determine-whether-a-2d-point-is-within-a-polygon
      *
@@ -139,7 +104,7 @@ public class FloodFill {
      * @param testy X- and y-coordinate of the test point.
      * @return Is it inside the polygon
      */
-    public boolean pnpoly(double testx, double testy) {
+    private boolean pnpoly(double testx, double testy) {
         boolean c = false;
         int i, j;
         for (i = 0, j = nvert - 1; i < nvert; j = i++) {

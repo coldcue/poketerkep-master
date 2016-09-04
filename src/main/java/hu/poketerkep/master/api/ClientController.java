@@ -7,15 +7,12 @@ import hu.poketerkep.shared.datasource.PokemonDataSource;
 import hu.poketerkep.shared.model.Pokemon;
 import hu.poketerkep.shared.validator.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.Collection;
 
-@RestController("client")
+@RestController
 public class ClientController {
 
     private final PokemonDataSource pokemonDataSource;
@@ -28,10 +25,11 @@ public class ClientController {
     }
 
     @PostMapping("addPokemons")
-    public void addPokemon(Pokemon[] pokemons) throws ValidationException {
+    public void addPokemons(@RequestBody Pokemon[] pokemons) throws ValidationException {
         pokemonDataSource.addAll(Arrays.asList(pokemons));
     }
 
+    //@JsonView(ScanLocation.View.OnlyCoordinates.class)
     @GetMapping("nextScanLocations")
     public Collection<ScanLocation> getNextScanLocations(@RequestParam(required = false, defaultValue = "100") int limit) {
         return scanService.getNextScanLocations(limit);
