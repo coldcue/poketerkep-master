@@ -5,6 +5,7 @@ import hu.poketerkep.shared.model.UserConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.Optional;
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -33,7 +34,17 @@ public class UserManagerService {
         if (userConfigs.size() == 0) {
             fillQueue();
         }
-        return Optional.ofNullable(userConfigs.poll());
+
+        Optional<UserConfig> optional = Optional.ofNullable(userConfigs.poll());
+
+        //Update last used
+        if (optional.isPresent()) {
+            UserConfig userConfig = optional.get();
+            userConfig.setLastUsed(Instant.now().toEpochMilli());
+            userConfigDataService.save(userConfig);
+        }
+
+        return optional;
     }
 
     private synchronized void fillQueue() {

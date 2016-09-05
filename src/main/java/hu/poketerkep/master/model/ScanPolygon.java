@@ -11,6 +11,7 @@ import java.util.TreeSet;
 
 public class ScanPolygon {
     private String id;
+    private int priority;
     private Coordinate[] vertices;
 
     public String getId() {
@@ -38,9 +39,17 @@ public class ScanPolygon {
         long id = 0;
 
         for (Coordinate coordinate : coordinates) {
-            scanLocations.add(new ScanLocation(id++, coordinate, Instant.MIN));
+            scanLocations.add(new ScanLocation(id++, priority, coordinate, Instant.MIN));
         }
 
         return scanLocations;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
 }

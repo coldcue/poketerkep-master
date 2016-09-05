@@ -16,12 +16,15 @@ public class ScanPolygonDBItem {
     @DynamoDBHashKey
     private String id;
     @DynamoDBAttribute
+    private int priority;
+    @DynamoDBAttribute
     private String vertices;
 
     public static ScanPolygonDBItem fromScanPolygon(ScanPolygon scanPolygon) {
         ScanPolygonDBItem scanPolygonDBItem = new ScanPolygonDBItem();
 
         scanPolygonDBItem.setId(scanPolygon.getId());
+        scanPolygonDBItem.setPriority(scanPolygon.getPriority());
         try {
             scanPolygonDBItem.setVertices(objectMapper.writeValueAsString(scanPolygon.getVertices()));
         } catch (JsonProcessingException e) {
@@ -42,6 +45,7 @@ public class ScanPolygonDBItem {
         ScanPolygon scanPolygon = new ScanPolygon();
 
         scanPolygon.setId(id);
+        scanPolygon.setPriority(priority);
         scanPolygon.setVertices(coordinates);
 
         return scanPolygon;
@@ -61,5 +65,13 @@ public class ScanPolygonDBItem {
 
     public void setVertices(String vertices) {
         this.vertices = vertices;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
 }

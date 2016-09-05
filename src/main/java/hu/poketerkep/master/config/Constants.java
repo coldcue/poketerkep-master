@@ -1,12 +1,6 @@
 package hu.poketerkep.master.config;
 
 public class Constants {
-    public static final int UNUSED_LOCATION_TIME_SECONDS = 5 * 60; // 5 mins
     public static final int UNUSED_USER_TIME_SECONDS = 15 * 60; // 15 mins
-
-    public static final int NEW_DATA_RIVERS_MINUS = 15;
-    public static final int NEW_DATA_RIVERS_MAX = 30;
-
-    public static final long NO_DATA_GRACE_PERIOD = 2;
-    public static final long INSTANCE_KILL_AGE = 1;
+    public static final long PRIORITY_TIME_MINS = 15;
 }
