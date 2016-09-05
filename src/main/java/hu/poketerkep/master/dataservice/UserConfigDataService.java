@@ -76,6 +76,7 @@ public class UserConfigDataService implements DataService<UserConfig> {
                 .withLimit(limit);
 
         return dynamoDBMapper.scan(UserConfigDBItem.class, scanExpression).stream()
+                .limit(limit)
                 .map(UserConfigDBItem::toUserConfig)
                 .collect(Collectors.toList());
     }

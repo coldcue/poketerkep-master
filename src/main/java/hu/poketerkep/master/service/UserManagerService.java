@@ -29,10 +29,16 @@ public class UserManagerService {
      *
      * @return
      */
-    public Optional<UserConfig> getNextWorkingUser() {
+    public synchronized Optional<UserConfig> getNextWorkingUser() {
+        if (userConfigs.size() == 0) {
+            fillQueue();
+        }
+        return Optional.ofNullable(userConfigs.poll());
+    }
+
+    private synchronized void fillQueue() {
         if (userConfigs.size() == 0) {
             userConfigs.addAll(userConfigDataService.getUnused(capacity));
         }
-        return Optional.ofNullable(userConfigs.poll());
     }
 }

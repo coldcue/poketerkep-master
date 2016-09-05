@@ -13,8 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/client")
@@ -47,10 +45,12 @@ public class ClientController implements ClientAPIEndpoint {
 
     @Override
     @GetMapping("/nextScanLocations")
-    public ResponseEntity<Collection<Coordinate>> nextScanLocations(@RequestParam int limit) {
-        return ResponseEntity.ok(scanService.getNextScanLocations(limit).stream()
+    public ResponseEntity<Coordinate[]> nextScanLocations(@RequestParam int limit) {
+        Coordinate[] coordinates = scanService.getNextScanLocations(limit).stream()
                 .map(ScanLocation::getCoordinate)
-                .collect(Collectors.toList()));
+                .toArray(Coordinate[]::new);
+
+        return ResponseEntity.ok(coordinates);
     }
 
 
