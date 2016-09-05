@@ -16,9 +16,11 @@ apply plugin: 'spring-boot'
 
 jar {
     baseName = 'poketerkep-master'
-    version = '0.0.1-SNAPSHOT'
+    version = '0.1'
 }
+//noinspection GroovyUnusedAssignment
 sourceCompatibility = 1.8
+//noinspection GroovyUnusedAssignment
 targetCompatibility = 1.8
 
 repositories {
@@ -26,6 +28,9 @@ repositories {
     jcenter()
 }
 
+springBoot {
+    executable = true
+}
 
 dependencies {
     compile('org.springframework.boot:spring-boot-starter')
@@ -37,4 +42,5 @@ dependencies {
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile "org.mockito:mockito-core:1.+"
     testCompile project(path: ':poketerkep-shared', configuration: "tests")
+    testCompile 'junit:junit:4.10'
 }
