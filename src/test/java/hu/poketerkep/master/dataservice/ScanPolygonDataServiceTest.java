@@ -4,6 +4,7 @@ import hu.poketerkep.master.config.DynamoDBConfig;
 import hu.poketerkep.master.model.ScanPolygon;
 import hu.poketerkep.master.tools.ScanPolygonGenerator;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.Collection;
 import java.util.Optional;
 
+@Ignore
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {DynamoDBConfig.class, ScanPolygonDataService.class})
 public class ScanPolygonDataServiceTest {

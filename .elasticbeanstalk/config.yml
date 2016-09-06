@@ -1,0 +1,12 @@
+deploy:
+  artifact: build/libs/poketerkep-master-0.1.war
+branch-defaults:
+  dev-profile:
+    environment: poketerkep-master-dev
+global:
+  application_name: poketerkep-master
+  default_ec2_keyname: aws
+  default_platform: 64bit Amazon Linux 2016.03 v2.1.6 running Java 8
+  default_region: eu-west-1
+  profile: null
+  sc: git

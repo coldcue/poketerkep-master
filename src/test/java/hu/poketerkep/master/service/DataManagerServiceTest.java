@@ -5,6 +5,7 @@ import hu.poketerkep.shared.datasource.PokemonDataSource;
 import hu.poketerkep.shared.model.Pokemon;
 import hu.poketerkep.shared.model.RandomPokemonGenerator;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 
+@Ignore
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {RedisConfig.class, DataManagerService.class, PokemonDataSource.class})
 public class DataManagerServiceTest {

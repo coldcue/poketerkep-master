@@ -11,8 +11,9 @@ buildscript {
 }
 
 apply plugin: 'java'
-apply plugin: 'idea'
 apply plugin: 'spring-boot'
+apply plugin: 'war'
+apply plugin: 'idea'
 
 jar {
     baseName = 'poketerkep-master'
@@ -28,8 +29,8 @@ repositories {
     jcenter()
 }
 
-springBoot {
-    executable = true
+configurations {
+    providedRuntime
 }
 
 dependencies {
@@ -43,4 +44,6 @@ dependencies {
     testCompile "org.mockito:mockito-core:1.+"
     testCompile project(path: ':poketerkep-shared', configuration: "tests")
     testCompile 'junit:junit:4.10'
+
+    providedRuntime("org.springframework.boot:spring-boot-starter-tomcat:1.4.0.RELEASE")
 }
