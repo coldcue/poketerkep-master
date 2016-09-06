@@ -15,7 +15,7 @@ public class RedisConfig {
     public class DevelopmentRedisConfig {
         @Bean
         JedisPool jedisPool() {
-            return new JedisPool(new JedisPoolConfig(), "poketerkep-data.4wfczw.0001.euw1.cache.amazonaws.com", 6379);
+            return new JedisPool(new JedisPoolConfig(), "poketerkep-cache.4wfczw.0001.euw1.cache.amazonaws.com", 6379);
         }
 
         @Bean
