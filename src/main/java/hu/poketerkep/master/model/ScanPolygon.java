@@ -6,8 +6,7 @@ import hu.poketerkep.shared.geo.Coordinate;
 
 import java.time.Instant;
 import java.util.Collection;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.HashSet;
 
 public class ScanPolygon {
     private String id;
@@ -31,7 +30,7 @@ public class ScanPolygon {
     }
 
     public Collection<ScanLocation> generateScanLocations() {
-        SortedSet<ScanLocation> scanLocations = new TreeSet<>();
+        HashSet<ScanLocation> scanLocations = new HashSet<>();
 
         FloodFill floodFill = new FloodFill(vertices);
         Collection<Coordinate> coordinates = floodFill.generate();

@@ -12,6 +12,7 @@ public class ScanLocation implements Comparable<ScanLocation> {
     private final int priority;
     private final Coordinate coordinate;
     private Instant lastScanned;
+    private Instant compareNow;
 
     ScanLocation(long id, int priority, Coordinate coordinate, Instant lastScanned) {
         this.id = id;
@@ -32,20 +33,36 @@ public class ScanLocation implements Comparable<ScanLocation> {
         this.lastScanned = lastScanned;
     }
 
+    public void setCompareNow(Instant compareNow) {
+        this.compareNow = compareNow;
+    }
+
     @Override
     public int compareTo(ScanLocation o) {
-        Instant priorityTime = Instant.now().minus(Duration.ofMinutes(Constants.PRIORITY_TIME_MINS));
+        Instant priorityTime = compareNow.minus(Duration.ofMinutes(Constants.PRIORITY_TIME_MINS));
 
-        //If both is before priority time, then priority matters
-        if (lastScanned.isBefore(priorityTime) && o.lastScanned.isBefore(priorityTime)) {
+        //If both is before priority time or same lastScanned, then priority matters
+        if (lastScanned.isBefore(priorityTime) && o.lastScanned.isBefore(priorityTime)
+                || lastScanned == o.lastScanned) {
 
             //If both have the same priority, ID matters
             if (priority == o.priority) {
-                return Long.compare(id, o.id);
-            } else {
+                int idComparison = Long.compare(id, o.id);
+
+                //If they have the same ID, then compare coordinate
+                if (idComparison == 0) {
+                    return Double.compare(coordinate.getLatitude(), o.coordinate.getLatitude());
+                } else {
+                    return idComparison;
+                }
+            }
+            //If one has higher priority, priority matters
+            else {
                 return Integer.compare(priority, o.priority);
             }
-        } else {
+        }
+        //If they are not before priority time
+        else {
             return lastScanned.isBefore(o.lastScanned) ? -1 : 1;
         }
     }
