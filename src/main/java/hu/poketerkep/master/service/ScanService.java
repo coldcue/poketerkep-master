@@ -30,9 +30,9 @@ public class ScanService {
     }
 
     /**
-     * Refresh scanLocations every 15 min
+     * Refresh scanLocations every 8 hours
      */
-    @Scheduled(fixedDelay = 15 * 60 * 1000)
+    @Scheduled(fixedDelay = 8 * 60 * 60 * 1000)
     public synchronized void refreshScanPolygons() {
         scanPolygons.clear();
 
