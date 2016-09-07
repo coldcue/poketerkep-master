@@ -1,7 +1,7 @@
 package hu.poketerkep.master.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import hu.poketerkep.master.config.Constants;
+import hu.poketerkep.shared.config.Constants;
 import hu.poketerkep.shared.geo.Coordinate;
 
 import java.time.Duration;

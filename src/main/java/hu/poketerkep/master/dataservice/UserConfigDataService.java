@@ -3,7 +3,7 @@ package hu.poketerkep.master.dataservice;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
-import hu.poketerkep.master.config.Constants;
+import hu.poketerkep.shared.config.Constants;
 import hu.poketerkep.master.dynamodb.model.UserConfigDBItem;
 import hu.poketerkep.shared.model.UserConfig;
 import org.springframework.beans.factory.annotation.Autowired;
