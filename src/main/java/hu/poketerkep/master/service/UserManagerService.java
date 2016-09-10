@@ -17,7 +17,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 public class UserManagerService {
 
     private final UserConfigDataService userConfigDataService;
-    private final int capacity = 100;
+    private final int capacity = 1000;
     private Queue<UserConfig> userConfigs = new ArrayBlockingQueue<>(capacity);
 
     @Autowired
