@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.util.Optional;
 import java.util.Queue;
-import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.PriorityBlockingQueue;
 
 /**
  * This class is for caching users, so there will be less data usage
@@ -17,8 +17,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 public class UserManagerService {
 
     private final UserConfigDataService userConfigDataService;
-    private final int capacity = 1000;
-    private Queue<UserConfig> userConfigs = new ArrayBlockingQueue<>(capacity);
+    private Queue<UserConfig> userConfigs = new PriorityBlockingQueue<>(1000, UserConfig.LAST_USED_COMPARATOR);
 
     @Autowired
     public UserManagerService(UserConfigDataService userConfigDataService) {
@@ -30,7 +29,7 @@ public class UserManagerService {
      *
      * @return
      */
-    public synchronized Optional<UserConfig> getNextWorkingUser() {
+    public Optional<UserConfig> getNextWorkingUser() {
         if (userConfigs.size() == 0) {
             fillQueue();
         }
@@ -42,6 +41,9 @@ public class UserManagerService {
             UserConfig userConfig = optional.get();
             userConfig.setLastUsed(Instant.now().toEpochMilli());
             userConfigDataService.save(userConfig);
+
+            //Put back to the Queue
+            userConfigs.offer(userConfig);
         }
 
         return optional;
@@ -49,7 +51,11 @@ public class UserManagerService {
 
     private synchronized void fillQueue() {
         if (userConfigs.size() == 0) {
-            userConfigs.addAll(userConfigDataService.getUnused(capacity));
+            userConfigs.addAll(userConfigDataService.getAllUsable());
         }
+    }
+
+    public void onBanned(UserConfig userConfig) {
+        userConfigs.removeIf(o -> o.getUserName().equals(userConfig.getUserName()));
     }
 }

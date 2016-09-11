@@ -51,7 +51,7 @@ public class UserConfigDataServiceTest {
         userConfigDataService.save(justUsed);
         userConfigDataService.save(ok);
 
-        Collection<UserConfig> unused = userConfigDataService.getUnused(100000);
+        Collection<UserConfig> unused = userConfigDataService.getAllUsable();
 
         Assert.assertFalse(isInDatabase(banned, unused).isPresent());
         Assert.assertFalse(isInDatabase(justUsed, unused).isPresent());
