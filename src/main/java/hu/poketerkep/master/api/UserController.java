@@ -42,6 +42,8 @@ public class UserController implements UserAPIEndpoint {
         userConfig.setBanned(true);
         userConfig.setLastUsed(Instant.now().toEpochMilli());
         userConfigDataService.save(userConfig);
+        // Remove user from queue
+        userManagerService.onBanned(userConfig);
         return ResponseEntity.ok(userConfig);
     }
 

@@ -39,8 +39,9 @@ public class UserManagerService {
         //Update last used
         if (optional.isPresent()) {
             UserConfig userConfig = optional.get();
+
+            //Update last used time
             userConfig.setLastUsed(Instant.now().toEpochMilli());
-            userConfigDataService.save(userConfig);
 
             //Put back to the Queue
             userConfigs.offer(userConfig);
