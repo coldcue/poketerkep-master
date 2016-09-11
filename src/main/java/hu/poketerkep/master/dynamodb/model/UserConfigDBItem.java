@@ -2,7 +2,6 @@ package hu.poketerkep.master.dynamodb.model;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIndexHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import hu.poketerkep.shared.model.UserConfig;
 
@@ -10,7 +9,7 @@ import hu.poketerkep.shared.model.UserConfig;
 public class UserConfigDBItem {
     @DynamoDBHashKey
     private String userName;
-    @DynamoDBIndexHashKey
+    @DynamoDBAttribute
     private long lastUsed;
     @DynamoDBAttribute
     private int banned;
