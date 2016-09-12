@@ -22,7 +22,7 @@ public class UserManagerServiceTest {
         UserManagerService userManagerService = new UserManagerService(mock);
 
         for (int i = 0; i < 200; i++) {
-            assertTrue(userManagerService.getNextWorkingUser().isPresent());
+            assertTrue(userManagerService.getNextWorkingUser(10).isPresent());
         }
     }
 
@@ -33,7 +33,7 @@ public class UserManagerServiceTest {
 
         UserManagerService userManagerService = new UserManagerService(mock);
 
-        assertFalse(userManagerService.getNextWorkingUser().isPresent());
+        assertFalse(userManagerService.getNextWorkingUser(10).isPresent());
     }
 
     @Test
@@ -56,19 +56,19 @@ public class UserManagerServiceTest {
 
         UserManagerService userManagerService = new UserManagerService(mock);
 
-        assertEquals(uc0, userManagerService.getNextWorkingUser().get());
+        assertEquals(uc0, userManagerService.getNextWorkingUser(1).get().iterator().next());
         Thread.sleep(100);
-        assertEquals(uc100, userManagerService.getNextWorkingUser().get());
+        assertEquals(uc100, userManagerService.getNextWorkingUser(1).get().iterator().next());
         Thread.sleep(100);
-        assertEquals(uc101, userManagerService.getNextWorkingUser().get());
+        assertEquals(uc101, userManagerService.getNextWorkingUser(1).get().iterator().next());
         Thread.sleep(100);
-        assertEquals(uc102, userManagerService.getNextWorkingUser().get());
+        assertEquals(uc102, userManagerService.getNextWorkingUser(1).get().iterator().next());
         Thread.sleep(100);
 
-        assertEquals(uc0, userManagerService.getNextWorkingUser().get());
-        assertEquals(uc100, userManagerService.getNextWorkingUser().get());
-        assertEquals(uc101, userManagerService.getNextWorkingUser().get());
-        assertEquals(uc102, userManagerService.getNextWorkingUser().get());
+        assertEquals(uc0, userManagerService.getNextWorkingUser(1).get().iterator().next());
+        assertEquals(uc100, userManagerService.getNextWorkingUser(1).get().iterator().next());
+        assertEquals(uc101, userManagerService.getNextWorkingUser(1).get().iterator().next());
+        assertEquals(uc102, userManagerService.getNextWorkingUser(1).get().iterator().next());
     }
 
     @Test
@@ -85,14 +85,14 @@ public class UserManagerServiceTest {
 
         UserManagerService userManagerService = new UserManagerService(mock);
 
-        userManagerService.getNextWorkingUser();
+        userManagerService.getNextWorkingUser(1);
 
         userManagerService.onBanned(a);
 
         Thread.sleep(100);
-        assertEquals(b, userManagerService.getNextWorkingUser().get());
+        assertEquals(b, userManagerService.getNextWorkingUser(1).get().iterator().next());
         Thread.sleep(100);
-        assertEquals(b, userManagerService.getNextWorkingUser().get());
+        assertEquals(b, userManagerService.getNextWorkingUser(1).get().iterator().next());
 
     }
 
