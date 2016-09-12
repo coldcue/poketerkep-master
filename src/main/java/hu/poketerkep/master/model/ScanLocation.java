@@ -14,7 +14,7 @@ public class ScanLocation implements Comparable<ScanLocation> {
     private Instant lastScanned;
     private Instant compareNow;
 
-    ScanLocation(long id, int priority, Coordinate coordinate, Instant lastScanned) {
+    public ScanLocation(long id, int priority, Coordinate coordinate, Instant lastScanned) {
         this.id = id;
         this.priority = priority;
         this.coordinate = coordinate;
@@ -47,14 +47,7 @@ public class ScanLocation implements Comparable<ScanLocation> {
 
             //If both have the same priority, ID matters
             if (priority == o.priority) {
-                int idComparison = Long.compare(id, o.id);
-
-                //If they have the same ID, then compare coordinate
-                if (idComparison == 0) {
-                    return Double.compare(coordinate.getLatitude(), o.coordinate.getLatitude());
-                } else {
-                    return idComparison;
-                }
+                return Long.compare(id, o.id);
             }
             //If one has higher priority, priority matters
             else {

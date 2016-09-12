@@ -39,9 +39,9 @@ public class ScanServiceTest {
         Assert.assertEquals(100, nextScanLocations.size());
 
         Iterator<ScanLocation> iterator = nextScanLocations.iterator();
-        Assert.assertEquals(49, iterator.next().getId());
-        Assert.assertEquals(49, iterator.next().getId());
-        Assert.assertEquals(48, iterator.next().getId());
-        Assert.assertEquals(48, iterator.next().getId());
+        Assert.assertEquals(0, iterator.next().getId());
+        Assert.assertEquals(0, iterator.next().getId());
+        Assert.assertEquals(1, iterator.next().getId());
+        Assert.assertEquals(1, iterator.next().getId());
     }
 }

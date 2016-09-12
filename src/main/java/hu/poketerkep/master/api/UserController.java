@@ -32,7 +32,7 @@ public class UserController implements UserAPIEndpoint {
         if (nextWorkingUser.isPresent()) {
             return ResponseEntity.ok(nextWorkingUser.get());
         } else {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
     }
 

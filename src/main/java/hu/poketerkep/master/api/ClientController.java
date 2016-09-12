@@ -9,10 +9,12 @@ import hu.poketerkep.shared.geo.Coordinate;
 import hu.poketerkep.shared.model.Pokemon;
 import hu.poketerkep.shared.validator.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.Collection;
 
 @RestController
 @RequestMapping("/client")
@@ -46,7 +48,13 @@ public class ClientController implements ClientAPIEndpoint {
     @Override
     @GetMapping("/nextScanLocations")
     public ResponseEntity<Coordinate[]> nextScanLocations(@RequestParam int limit) {
-        Coordinate[] coordinates = scanService.getNextScanLocations(limit).stream()
+        Collection<ScanLocation> nextScanLocations = scanService.getNextScanLocations(limit);
+
+        if (nextScanLocations == null || nextScanLocations.size() == 0) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        Coordinate[] coordinates = nextScanLocations.stream()
                 .map(ScanLocation::getCoordinate)
                 .toArray(Coordinate[]::new);
 
