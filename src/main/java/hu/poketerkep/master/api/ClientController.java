@@ -33,11 +33,7 @@ public class ClientController implements ClientAPIEndpoint {
     @PostMapping("/addPokemons")
     public ResponseEntity<Void> addPokemons(@RequestBody Pokemon[] pokemons) {
         try {
-            if (pokemons.length == 1) {
-                pokemonDataSource.add(pokemons[0]);
-            } else {
-                pokemonDataSource.addAll(Arrays.asList(pokemons));
-            }
+            pokemonDataSource.addAll(Arrays.asList(pokemons));
         } catch (ValidationException e) {
             return ResponseEntity.badRequest().build();
         }

@@ -1,6 +1,5 @@
 package hu.poketerkep.master.service;
 
-import com.google.common.collect.Queues;
 import hu.poketerkep.master.dataservice.ScanPolygonDataService;
 import hu.poketerkep.master.model.ScanLocation;
 import hu.poketerkep.master.model.ScanPolygon;
@@ -12,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Semaphore;
 import java.util.logging.Logger;
 
@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 public class ScanService {
     private final Logger log = Logger.getLogger(ScanService.class.getName());
     private final ScanPolygonDataService scanPolygonDataService;
-    private final Queue<ScanLocation> scanLocationQueue = Queues.newConcurrentLinkedQueue();
+    private final Queue<ScanLocation> scanLocationQueue = new ConcurrentLinkedQueue<>();
 
     private final Semaphore refreshScanPolygonsPermit = new Semaphore(1);
     private final Semaphore refreshQueuePermit = new Semaphore(1);

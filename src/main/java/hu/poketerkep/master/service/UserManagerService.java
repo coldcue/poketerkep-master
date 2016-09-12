@@ -8,9 +8,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.Optional;
-import java.util.PriorityQueue;
-import java.util.Queue;
+import java.util.*;
 import java.util.concurrent.Semaphore;
 import java.util.logging.Logger;
 
@@ -35,25 +33,26 @@ public class UserManagerService {
      *
      * @return
      */
-    public Optional<UserConfig> getNextWorkingUser() {
+    public Optional<Collection<UserConfig>> getNextWorkingUser(int limit) {
         // If there are no users, fill the queue
         if (userConfigs.size() == 0) {
             refreshUsers();
         }
 
-        Optional<UserConfig> optional = Optional.empty();
-        synchronized (userConfigs) {
-            optional = Optional.ofNullable(userConfigs.poll());
+        if (userConfigs.size() == 0) {
+            return Optional.empty();
         }
 
-        //Update last used
-        if (optional.isPresent()) {
-            UserConfig userConfig = optional.get();
+        Collection<UserConfig> result = new HashSet<>();
+        synchronized (userConfigs) {
+            for (int i = 0; i < limit; i++) {
+                UserConfig userConfig = userConfigs.poll();
+                if (userConfig == null) break;
+                result.add(userConfig);
 
-            //Update last used time
-            userConfig.setLastUsed(Instant.now().toEpochMilli());
+                //Update last used time
+                userConfig.setLastUsed(Instant.now().toEpochMilli());
 
-            synchronized (userConfigs) {
                 //Put back to the Queue
                 userConfigs.add(userConfig);
             }
@@ -61,7 +60,7 @@ public class UserManagerService {
 
         log.info("Getting user - userconfigs size:" + userConfigs.size());
 
-        return optional;
+        return Optional.of(result);
     }
 
     /**

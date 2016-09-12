@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
+import java.util.Collection;
 import java.util.Optional;
 
 @RestController
@@ -26,11 +27,14 @@ public class UserController implements UserAPIEndpoint {
     }
 
     @GetMapping("/nextUser")
-    public ResponseEntity<UserConfig> nextUser() {
-        Optional<UserConfig> nextWorkingUser = userManagerService.getNextWorkingUser();
+    public ResponseEntity<UserConfig[]> nextUser(@RequestParam int limit) {
+        Optional<Collection<UserConfig>> nextWorkingUser = userManagerService.getNextWorkingUser(limit);
 
         if (nextWorkingUser.isPresent()) {
-            return ResponseEntity.ok(nextWorkingUser.get());
+            UserConfig[] userConfigs = nextWorkingUser.get().stream()
+                    .toArray(UserConfig[]::new);
+
+            return ResponseEntity.ok(userConfigs);
         } else {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
