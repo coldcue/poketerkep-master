@@ -19,7 +19,14 @@ public class RedisConfig {
 
         @Bean
         JedisPool jedisPool() {
-            return new JedisPool(new JedisPoolConfig(), redisServerHost);
+            JedisPoolConfig poolConfig = new JedisPoolConfig();
+
+            //Set the total pools to handle many requests
+            poolConfig.setMaxTotal(16);
+            poolConfig.setMaxIdle(16);
+            poolConfig.setMinIdle(0);
+
+            return new JedisPool(poolConfig, redisServerHost);
         }
 
         @Bean
